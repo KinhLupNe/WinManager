@@ -8,12 +8,7 @@
             <TabItem Header="CPU">
                 <views:CpuControl/>
             </TabItem>
-            <TabItem Header="RAM">
-                <views:RamControl/>
-            </TabItem>
-            <TabItem Header="DISK">
-                <views:DiskControl/>
-            </TabItem>
+            
         </TabControl>
     </Grid>
 </Window>
