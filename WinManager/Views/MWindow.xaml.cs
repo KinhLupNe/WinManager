@@ -19,7 +19,7 @@ namespace WinManager.Views
     /// </summary>
     public partial class MWindow : Window
     {
-        // Meo may be
+        // Meo may be day
         public MWindow()
         {
             InitializeComponent();
