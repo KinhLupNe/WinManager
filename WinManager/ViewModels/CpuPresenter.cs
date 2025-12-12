@@ -7,6 +7,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace WinManager.ViewModels
 {
+
+    // them thong so gia 
     public partial class CpuPresenter : ObservableObject
     {
         private readonly CpuModel _model = new CpuModel();

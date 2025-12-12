@@ -18,6 +18,7 @@ namespace WinManager.Views
     /// <summary>
     /// Interaction logic for CpuControl.xaml
     /// </summary>
+    /// // fu
     public partial class CpuControl : UserControl
     {
         public CpuControl()
