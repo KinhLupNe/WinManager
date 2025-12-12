@@ -19,6 +19,7 @@ namespace WinManager.Views
     /// </summary>
     public partial class MWindow : Window
     {
+        // Meo may be
         public MWindow()
         {
             InitializeComponent();
