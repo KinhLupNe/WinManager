@@ -14,7 +14,7 @@ namespace WinManager.Models
         public CpuModel()
         {
             _cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-            _cpuCounter.NextValue(); // lần đọc đầu thường = 0
+            _cpuCounter.NextValue(); 
         }
 
         public float GetCpuUsage()

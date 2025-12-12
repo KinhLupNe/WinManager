@@ -26,11 +26,12 @@ namespace WinManager.ViewModels
 
             UpdateCpu();
         }
+        //update cpu
 
         private void UpdateCpu()
         {
             float u = _model.GetCpuUsage();
-            UsageText = $" Đang sử dụng {u:0.0}%";
+            UsageText = $"  {u:0.0}%";
         }
     }
 }
