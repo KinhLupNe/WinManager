@@ -11,18 +11,22 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using WinManager.ViewModels;
+
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for MWindow.xaml
+    /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MWindow : Window
+    public partial class MainWindow : Window
     {
-        // Meo may be
-        public MWindow()
+        public MainWindow()
         {
             InitializeComponent();
+        }
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+                this.DragMove();
         }
     }
 }

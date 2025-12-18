@@ -1,9 +1,37 @@
 ﻿<Application x:Class="WinManager.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WinManager"
-             StartupUri="Views/MWindow.xaml">
+             StartupUri="Views/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.DeepPurple.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Lime.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <SolidColorBrush x:Key="AppBackground" Color="#1e1e1e"/>
+            <SolidColorBrush x:Key="SidebarBackground" Color="#252525"/>
+            <SolidColorBrush x:Key="GlassBorder" Color="#33FFFFFF"/>
+
+            <SolidColorBrush x:Key="CpuBrush" Color="#00b4d8"/>
+            <SolidColorBrush x:Key="MemBrush" Color="#d00000"/>
+            <SolidColorBrush x:Key="DiskBrush" Color="#2ec4b6"/>
+            <SolidColorBrush x:Key="GpuBrush" Color="#7209b7"/>
+
+            <Style x:Key="MonoText" TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="Consolas, Courier New, Lucida Console"/>
+                <Setter Property="Foreground" Value="#88FFFFFF"/>
+            </Style>
+
+            <Style x:Key="NavRadioButtonStyle" TargetType="RadioButton" BasedOn="{StaticResource MaterialDesignTabRadioButton}">
+                <Setter Property="Padding" Value="10"/>
+                <Setter Property="Margin" Value="0,5"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>
