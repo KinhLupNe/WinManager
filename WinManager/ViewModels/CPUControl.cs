@@ -1,4 +1,5 @@
-﻿using LiveChartsCore;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
@@ -8,10 +9,12 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace WinManager.ViewModels
 {
-    public class CPUControl  // Giả sử bạn kế thừa BaseViewModel
+    public partial class CPUControl : ObservableObject  
     {
         // 1. Dữ liệu thực tế để vẽ (ObservableCollection tự động báo cho View khi thay đổi)
         private ObservableCollection<double> _cpuValues;
@@ -21,11 +24,53 @@ namespace WinManager.ViewModels
         public Axis[] XAxes { get; set; }
         public Axis[] YAxes { get; set; }
 
+        [ObservableProperty]
+        public double _threads;
+
+        [ObservableProperty]
+        public double _handles;
+
+        [ObservableProperty]
+        public double _processes;
+
+        [ObservableProperty]
+        public double _speed;
+
+        [ObservableProperty]
+        public string _name;
+
+        [ObservableProperty]
+        public double _usage;
+
+        [ObservableProperty]
+        public double _upTime;
+
+        [ObservableProperty]
+        public double _core;
+
+        [ObservableProperty]
+        public double _temperature;
+
+        [ObservableProperty]
+        public double _voltage;
+
+        [ObservableProperty]
+        public double _baseSpeed;
         public CPUControl()
         {
             // Khởi tạo danh sách giá trị rỗng (hoặc vài giá trị ban đầu)
             _cpuValues = new ObservableCollection<double> { 0, 10, 25, 15, 40, 30, 50 };
+            _threads = 50;
+            _handles = 100;
+            _processes = 200;
+            _speed = 100;
 
+            _baseSpeed = 1000;
+            _upTime = 100;
+            _core = 0;
+            _temperature = 0;
+            _voltage = 0;
+            _name = " Kinh Lup sama";
             // Cấu hình biểu đồ đường (Line Chart)
             Series = new ISeries[]
             {
@@ -41,8 +86,8 @@ namespace WinManager.ViewModels
                     new SKPoint(0.5f, 1)  // Kết thúc ở dưới
                 ),
                 // Hiệu ứng cong mềm mại (Process Explore style)
-                GeometrySize = 0, // Không hiện chấm tròn tại các điểm
-                LineSmoothness = 1 // 0 là thẳng tuột, 1 là cong mềm
+                GeometrySize = 1, // Không hiện chấm tròn tại các điểm
+                LineSmoothness = 0.1// 0 là thẳng tuột, 1 là cong mềm
             }
             };
 
@@ -51,7 +96,7 @@ namespace WinManager.ViewModels
             {
             new Axis
             {
-                IsVisible = false, // Ẩn trục X
+                IsVisible = true, // Ẩn trục X
             }
             };
 

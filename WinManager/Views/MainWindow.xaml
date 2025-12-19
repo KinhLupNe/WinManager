@@ -6,7 +6,8 @@
         xmlns:views="clr-namespace:WinManager.Views"
         xmlns:vm="clr-namespace:WinManager.ViewModels"
         mc:Ignorable="d"
-        Title="Window Monitor" Height="600" Width="1000"
+        Title="Window Monitor" 
+        ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
         Background="#050505">
 
