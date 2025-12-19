@@ -39,9 +39,9 @@
                                 BorderThickness="1">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="60"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="20*"/>
+                                    <ColumnDefinition Width="60*"/>
                                 </Grid.ColumnDefinitions>
 
                                 <Border x:Name="ActiveBar" 
@@ -137,6 +137,7 @@
                         </StackPanel>
                     </StackPanel>
                 </RadioButton>
+                
 
             </StackPanel>
         </Border>
