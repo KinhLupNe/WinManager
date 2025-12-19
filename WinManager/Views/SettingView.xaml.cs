@@ -10,18 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using WinManager.ViewModels;
 
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for CpuControl.xaml
+    /// Interaction logic for SettingView.xaml
     /// </summary>
-	/// song nhu l
-    public partial class CpuControl : UserControl
+    public partial class SettingView : UserControl
     {
-        public CpuControl()
+        public SettingView()
         {
             InitializeComponent();
         }

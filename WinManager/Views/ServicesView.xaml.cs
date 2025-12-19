@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for CPUView.xaml
+    /// Interaction logic for ServicesView.xaml
     /// </summary>
-    public partial class CPUView : UserControl
+    public partial class ServicesView : UserControl
     {
-        public CPUView()
+        public ServicesView()
         {
             InitializeComponent();
         }

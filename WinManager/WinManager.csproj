@@ -14,4 +14,8 @@
     <PackageReference Include="MaterialDesignThemes" Version="5.3.1-ci1190" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\ImageIcon\" />
+  </ItemGroup>
+
 </Project>
