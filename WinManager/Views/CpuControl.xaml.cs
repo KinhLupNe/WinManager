@@ -16,26 +16,13 @@ using WinManager.ViewModels;
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for CpuControl.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CpuControl : UserControl
     {
-        public MainWindow()
+        public CpuControl()
         {
             InitializeComponent();
-            SetWindowSize();
-        }
-
-        private void SetWindowSize()
-        {
-            
-            double screenWidth = SystemParameters.PrimaryScreenWidth;
-            double screenHeight = SystemParameters.PrimaryScreenHeight;
-        
-            this.Width = screenWidth * 0.85;
-            this.Height = screenHeight * 0.9;
-
-            
         }
     }
 }
