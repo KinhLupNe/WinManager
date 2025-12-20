@@ -3,21 +3,23 @@ using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+
+using WinManager.Models;
+using System.Diagnostics;
+using System.Windows.Media.Animation;
 
 namespace WinManager.ViewModels
 {
-    public partial class CPUControl : ObservableObject  
+    public partial class CPUControl : ObservableObject
     {
+
+        private readonly CpuModel _cpuModel;
         // 1. Dữ liệu thực tế để vẽ (ObservableCollection tự động báo cho View khi thay đổi)
         private ObservableCollection<double> _cpuValues;
+
+        //private bool _isActive = true;
+
 
         // 2. Các thuộc tính Binding ra View
         public ISeries[] Series { get; set; }
@@ -25,59 +27,58 @@ namespace WinManager.ViewModels
         public Axis[] YAxes { get; set; }
 
         [ObservableProperty]
-        public double _threads;
+        private double _threads;
 
         [ObservableProperty]
-        public double _handles;
+        private double _handles;
 
         [ObservableProperty]
-        public double _processes;
+        private double _processes;
 
         [ObservableProperty]
-        public double _speed;
+        private double _speed; // Tốc độ hiện tại (GHz)
 
         [ObservableProperty]
-        public string _name;
+        private string? _name;
 
         [ObservableProperty]
-        public double _usage;
+        private double _usage; // % CPU
 
         [ObservableProperty]
-        public double _upTime;
+        private string? _upTime; // Đã đổi sang string để khớp với "hh:mm:ss" của Model
 
         [ObservableProperty]
-        public double _core;
+        private double _core;
 
         [ObservableProperty]
-        public double _temperature;
+        private string? _temperature;
+        
+        [ObservableProperty]
+        private string? _power;
 
         [ObservableProperty]
-        public double _voltage;
+        private string? _voltage;
 
         [ObservableProperty]
-        public double _baseSpeed;
+        private double _baseSpeed; // Tốc độ cơ bản
         public CPUControl()
         {
-            // Khởi tạo danh sách giá trị rỗng (hoặc vài giá trị ban đầu)
-            _cpuValues = new ObservableCollection<double> { 0, 10, 25, 15, 40, 30, 50 };
-            _threads = 50;
-            _handles = 100;
-            _processes = 200;
-            _speed = 100;
+        
+            _cpuModel = new CpuModel();
 
-            _baseSpeed = 1000;
-            _upTime = 100;
-            _core = 0;
-            _temperature = 0;
-            _voltage = 0;
-            _name = " Kinh Lup sama";
-            // Cấu hình biểu đồ đường (Line Chart)
+            _cpuValues = new ObservableCollection<double>(new double[60]);
+
+            var initInfo = _cpuModel.GetCpuInfo();
+            BaseSpeed = initInfo.MaxSpeed;
+            Core = initInfo.CoreCount;
+
+            Name = initInfo.CpuName;
             Series = new ISeries[]
             {
             new LineSeries<double>
             {
                 Values = _cpuValues,
-                // Màu đường kẻ (Cyan - giống màu nút bấm của bạn)
+
                 Stroke = new SolidColorPaint(SKColor.Parse("#06b6d4")) { StrokeThickness = 2 },
                 // Màu nền (Gradient mờ dần xuống dưới)
                 Fill = new LinearGradientPaint(
@@ -86,8 +87,9 @@ namespace WinManager.ViewModels
                     new SKPoint(0.5f, 1)  // Kết thúc ở dưới
                 ),
                 // Hiệu ứng cong mềm mại (Process Explore style)
-                GeometrySize = 1, // Không hiện chấm tròn tại các điểm
-                LineSmoothness = 0.1// 0 là thẳng tuột, 1 là cong mềm
+                GeometrySize = 0, // Không hiện chấm tròn tại các điểm
+                LineSmoothness = 0.3,// 0 là thẳng tuột, 1 là cong mềm
+                AnimationsSpeed = TimeSpan.Zero
             }
             };
 
@@ -117,27 +119,68 @@ namespace WinManager.ViewModels
             };
 
             // Bắt đầu giả lập chạy dữ liệu (Sau này bạn thay bằng Timer đọc CPU thật)
-            SimulateData();
+            StartMonitoring();
         }
 
-        private async void SimulateData()
+        private async void StartMonitoring()
         {
             while (true)
             {
-                await Task.Delay(1000); // Cập nhật mỗi 1 giây
-
-                // Giả lập giá trị CPU ngẫu nhiên
-                var randomValue = new Random().Next(10, 80);
-
-                // Thêm giá trị mới
-                _cpuValues.Add(randomValue);
-
-                // Xóa giá trị cũ để biểu đồ luôn trôi (giữ lại 50 điểm gần nhất)
-                if (_cpuValues.Count > 50)
+                try
                 {
-                    _cpuValues.RemoveAt(0);
+
+                    var info = _cpuModel.GetCpuInfo();
+
+                    Usage = Math.Round(info.CpuUsage, 1);
+                    Speed = Math.Round(info.CurrentSpeed, 2);
+                    Processes = info.ProcessCount;
+                    Threads = info.ThreadCount;
+                    Handles = info.HandleCount;
+                    UpTime = info.Uptime;
+                    Power = Math.Round(info.PowerConsumption, 2).ToString();
+                    float t = info.Temperature;
+                    float p = info.PowerConsumption;
+
+                    Voltage = $"{info.Voltage:F2} V";
+                    if (t > 10)
+                    {
+                        Temperature = $"{info.Temperature:F1} °C";
+
+                    }
+                    else
+                    {
+                        Temperature = "N/A";
+                    }
+                    if ( p >0)
+                    {
+                        Power = Math.Round(info.PowerConsumption, 2).ToString();
+                    }else
+                    {
+                        Power = "N/A";
+                    }
+                    
+                   
+            
+
+                    // do thi
+                    _cpuValues.Add(Usage);
+                    if (_cpuValues.Count > 60)
+                    {
+                        _cpuValues.RemoveAt(0);
+                    }
                 }
+                catch
+                {
+                }
+
+                // slepp 1 s
+                await Task.Delay(1000);
             }
+        }
+
+        public void Dispose()
+        {
+            _cpuModel?.Dispose();
         }
     }
 }

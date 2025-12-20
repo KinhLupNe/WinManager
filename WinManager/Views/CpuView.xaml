@@ -11,9 +11,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="800">
 
-    <UserControl.DataContext>
+    <d:UserControl.DataContext>
         <vm:CPUControl/>
-    </UserControl.DataContext>
+    </d:UserControl.DataContext>
     
     <UserControl.Resources>
         <Style x:Key="LabelStyle" TargetType="TextBlock">

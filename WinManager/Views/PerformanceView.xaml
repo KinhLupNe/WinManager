@@ -8,9 +8,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.DataContext>
+    <d:UserControl.DataContext>
         <vm:PerformanceControl></vm:PerformanceControl>
-    </UserControl.DataContext>
+    </d:UserControl.DataContext>
 
     <UserControl.Resources>
         <DataTemplate DataType="{x:Type vm:CPUControl}">
@@ -117,9 +117,9 @@
                     <StackPanel>
                         <TextBlock Text="CPU" Foreground="White" FontWeight="SemiBold"/>
                         <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                            <TextBlock Text="51%" FontWeight="Bold"
+                            <TextBlock Text="{Binding CpuControl.Usage,StringFormat={}{0:N0} %}" FontWeight="Bold"
                                        Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
-                            <TextBlock Text="5.38 GHz" Foreground="Gray" Margin="10,0,0,0"/>
+                            <TextBlock Text="{Binding CpuControl.Speed, StringFormat={}{0:N2} GHz}" Foreground="Gray" Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </RadioButton>
