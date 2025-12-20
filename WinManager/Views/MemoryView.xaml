@@ -7,9 +7,9 @@
              xmlns:vm="clr-namespace:WinManager.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.DataContext>
+    <d:UserControl.DataContext>
         <vm:MemoryControl> </vm:MemoryControl>
-    </UserControl.DataContext>
+    </d:UserControl.DataContext>
     <Grid>
         <TextBlock Foreground="White"> 22222222222222222222222222222222222222222222222222</TextBlock>
     </Grid>
