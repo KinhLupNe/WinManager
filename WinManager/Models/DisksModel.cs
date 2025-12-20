@@ -592,7 +592,28 @@ namespace WinManager.Models
             }
             return $"{mbps:F2} MB/s";
         }
+        
+        // Get complete disk info with updated metrics
+        public DiskInfo GetDiskInfo(int index)
+        {
+            var disk = GetDisk(index);
+            if (disk != null)
+            {
+                UpdateDiskMetrics(disk);
+            }
+            return disk;
+        }
 
+        // Get all disks info with updated metrics
+        public List<DiskInfo> GetAllDisksInfo()
+        {
+            foreach (var disk in _disks)
+            {
+                UpdateDiskMetrics(disk);
+            }
+            return _disks;
+        }
+        
         // Debug: Print all disk information
         public void PrintAllDisksInfo()
         {
