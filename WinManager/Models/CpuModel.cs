@@ -1,11 +1,8 @@
 ﻿
-using System.Diagnostics;
-
-using System.Management;
-
-
 // dotnet add package LibreHardwareMonitorLib
 using LibreHardwareMonitor.Hardware;
+using System.Diagnostics;
+using System.Management;
 
 namespace WinManager.Models
 {
