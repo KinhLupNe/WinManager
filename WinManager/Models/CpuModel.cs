@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.Diagnostics;
-using System.Linq;
+
 using System.Management;
-using System.Text;
-using System.Threading.Tasks;
+
 
 // dotnet add package LibreHardwareMonitorLib
 using LibreHardwareMonitor.Hardware;
@@ -264,7 +262,7 @@ namespace WinManager.Models
                         {
                             if (sensor.SensorType == SensorType.Power)
                             {
-                                Debug.WriteLine($"Power Sensor: {sensor.Name} = {sensor.Value}");
+                                //Debug.WriteLine($"Power Sensor: {sensor.Name} = {sensor.Value}");
                             }
                         }
 
@@ -316,7 +314,7 @@ namespace WinManager.Models
                         {
                             if (sensor.SensorType == SensorType.Voltage)
                             {
-                                Debug.WriteLine($"Voltage Sensor: {sensor.Name} = {sensor.Value}");
+                                //Debug.WriteLine($"Voltage Sensor: {sensor.Name} = {sensor.Value}");
                             }
                         }
 
