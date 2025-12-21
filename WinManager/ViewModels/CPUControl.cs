@@ -82,16 +82,16 @@ namespace WinManager.ViewModels
             };
 
             // Thread logic
-            Task.Run(() => MonitorLoop(_cts.Token));
+            Task.Run(() => MonitorLoopC(_cts.Token));
         }
 
-        private async Task MonitorLoop(CancellationToken token)
+        private async Task MonitorLoopC(CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
                 try
                 {
-                    
+
                     var info = _cpuModel.GetCpuInfo();
 
                     double u = Math.Round(info.CpuUsage, 1);
@@ -117,7 +117,7 @@ namespace WinManager.ViewModels
                         if (_cpuValues.Count > 60) _cpuValues.RemoveAt(0);
                     });
 
-                    
+
                     await Task.Delay(1000, token);
                 }
                 catch (TaskCanceledException) { break; } // Thoát êm đẹp khi hủy
