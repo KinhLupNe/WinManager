@@ -63,8 +63,8 @@ namespace WinManager.ViewModels
                         new SKPoint(0.5f, 1)
                     ),
                     GeometrySize = 0, // Tắt chấm tròn để vẽ nhanh hơn
-                    LineSmoothness = 0.1, // Tăng độ mượt đường cong
-                    AnimationsSpeed = TimeSpan.FromMilliseconds(200) // Hiệu ứng lướt nhẹ
+                    LineSmoothness = 0.0, // Tăng độ mượt đường cong
+                    AnimationsSpeed = TimeSpan.Zero // Hiệu ứng lướt nhẹ
                 }
             };
 
@@ -81,8 +81,7 @@ namespace WinManager.ViewModels
                 }
             };
 
-            // BẮT ĐẦU LUỒNG CHẠY NGẦM
-            // Không chặn UI Thread
+            // Thread logic
             Task.Run(() => MonitorLoop(_cts.Token));
         }
 
@@ -92,11 +91,9 @@ namespace WinManager.ViewModels
             {
                 try
                 {
-                    // 1. LẤY DỮ LIỆU (NẶNG) - Chạy ở Background Thread
-                    // Việc này tốn thời gian nhưng UI vẫn mượt vì nó nằm ở đây
+                    
                     var info = _cpuModel.GetCpuInfo();
 
-                    // Tính toán logic format string ở đây luôn để giảm tải cho UI
                     double u = Math.Round(info.CpuUsage, 1);
                     double s = Math.Round(info.CurrentSpeed, 2);
                     string uptime = info.Uptime;
@@ -104,7 +101,6 @@ namespace WinManager.ViewModels
                     string temp = (info.Temperature > 10) ? $"{info.Temperature:F1} °C" : "N/A";
                     string pow = (info.PowerConsumption > 0) ? $"{Math.Round(info.PowerConsumption, 2)}" : "N/A";
 
-                    // 2. CẬP NHẬT UI (NHẸ) - Chỉ chuyển về UI Thread để gán giá trị
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         Usage = u;
@@ -121,7 +117,7 @@ namespace WinManager.ViewModels
                         if (_cpuValues.Count > 60) _cpuValues.RemoveAt(0);
                     });
 
-                    // Nghỉ 1 giây (Dùng Task.Delay không chặn luồng)
+                    
                     await Task.Delay(1000, token);
                 }
                 catch (TaskCanceledException) { break; } // Thoát êm đẹp khi hủy
