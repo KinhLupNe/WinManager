@@ -9,14 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\ImageIcon\**" />
+    <EmbeddedResource Remove="Views\ImageIcon\**" />
+    <None Remove="Views\ImageIcon\**" />
+    <Page Remove="Views\ImageIcon\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.5-pre585" />
     <PackageReference Include="LiveChartsCore.SkiaSharpView.WPF" Version="2.0.0-rc5.4" />
     <PackageReference Include="MaterialDesignThemes" Version="5.3.1-ci1190" />
+    <PackageReference Include="System.ServiceProcess.ServiceController" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\ImageIcon\" />
+    <Folder Include="Views\Image\" />
   </ItemGroup>
 
 </Project>

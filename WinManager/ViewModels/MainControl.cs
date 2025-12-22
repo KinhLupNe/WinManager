@@ -1,10 +1,4 @@
-﻿using LiveChartsCore.Defaults;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 namespace WinManager.ViewModels
@@ -14,7 +8,7 @@ namespace WinManager.ViewModels
         private readonly PerformanceControl _performanceControl = new PerformanceControl();
         private readonly ServicesControl _servicesControl = new ServicesControl();
         private readonly SettingControl _settingControl = new SettingControl();
-        
+
         [ObservableProperty]
         private object? _currentView;
 
