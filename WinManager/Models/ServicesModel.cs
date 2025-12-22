@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
 using System.Diagnostics;
-using System.Linq;
 using System.Management;
-using Microsoft.Win32;
 
 // dotnet add package System.ServiceProcess.ServiceController
 using System.ServiceProcess;
 
 namespace WinManager.Models
 {
-    internal class ServicesModel : IDisposable
+    public class ServicesModel : IDisposable
     {
         private List<ServiceInfo> _services;
         private readonly object _lock = new object();
@@ -58,7 +55,7 @@ namespace WinManager.Models
 
                                 // Get LoadOrderGroup from Registry
                                 serviceInfo.LoadOrderGroup = GetLoadOrderGroupFromRegistry(serviceInfo.Name);
-                                
+
                                 _services.Add(serviceInfo);
                             }
                             catch (Exception ex)
@@ -702,6 +699,7 @@ namespace WinManager.Models
 
         // Additional properties
         public bool DesktopInteract { get; set; }
+
         public string ErrorControl { get; set; } = string.Empty;
         public int ExitCode { get; set; }
         public List<string> Dependencies { get; set; } = new List<string>();

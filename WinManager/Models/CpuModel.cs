@@ -1,5 +1,4 @@
-﻿
-// dotnet add package LibreHardwareMonitorLib
+﻿// dotnet add package LibreHardwareMonitorLib
 using LibreHardwareMonitor.Hardware;
 using System.Diagnostics;
 using System.Management;

@@ -1,5 +1,4 @@
-﻿
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Management;
 using System.Runtime.InteropServices;
 
@@ -11,6 +10,7 @@ namespace WinManager.Models
 
         // Cache values
         private ulong _totalPhysicalMemory;
+
         private int _memorySlots;
         private int _slotsUsed;
         private string _formFactor = "Unknown";

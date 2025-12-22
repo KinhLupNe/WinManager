@@ -89,11 +89,9 @@ namespace WinManager.ViewModels
             {
                 try
                 {
-
                     var info = _memoryModel.GetMemoryInfo();
 
                     double usage = Math.Round(info.MemoryUsagePercent, 0);
-
 
                     Application.Current.Dispatcher.Invoke(() =>
                     {
