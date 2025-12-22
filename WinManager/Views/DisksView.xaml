@@ -8,7 +8,7 @@
              d:DesignHeight="750" d:DesignWidth="850">
 
     <UserControl.Resources>
-        
+
         <Style x:Key="LabelStyle" TargetType="TextBlock">
             <Setter Property="Foreground" Value="#a1a1aa"/>
             <Setter Property="FontSize" Value="12"/>
@@ -28,6 +28,26 @@
             <Setter Property="Padding" Value="15"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
+        <Style x:Key="ModernProgressBarStyle" TargetType="ProgressBar">
+            <Setter Property="Height" Value="8"/>
+            <Setter Property="Background" Value="#27272a"/>
+            <Setter Property="Foreground" Value="#10b981"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ProgressBar">
+                        <Grid x:Name="TemplateRoot">
+                            
+
+                            <Border x:Name="PART_Indicator"
+                                    HorizontalAlignment="Left"
+                                    Background="{TemplateBinding Foreground}"
+                                    CornerRadius="4"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
 
     <ScrollViewer VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
@@ -46,14 +66,15 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="Disk" FontSize="28" FontWeight="ExtraBold" Foreground="White"/>
                                 <TextBlock Text="{Binding PhysicalDriveNumber}" FontSize="28" FontWeight="ExtraBold" Foreground="White" Margin="10,0,0,0"/>
-                                <TextBlock Text="{Binding DiskType}" FontSize="16" Foreground="#f59e0b" VerticalAlignment="Bottom" Margin="10,0,0,4" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding Disktype}" FontSize="16" Foreground="#84cc16" VerticalAlignment="Bottom" Margin="10,0,0,4" FontWeight="Bold"/>
                             </StackPanel>
-                            <TextBlock Text="{Binding Model}" FontSize="16" Foreground="#06b6d4" Margin="0,5,0,0"/>
+                            <TextBlock Text="{Binding Model}" FontSize="16" Foreground="#10b981" Margin="0,5,0,0"/>
                         </StackPanel>
 
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right">
                             <TextBlock Text="{Binding ActiveTime, StringFormat={}{0:N0} %}" 
                                        FontSize="42" FontWeight="Bold" 
+                                       Foreground="#34d399"
                                        HorizontalAlignment="Right"/>
                             <TextBlock Text="ACTIVE TIME" FontSize="12" FontWeight="Bold" Foreground="#71717a" 
                                        HorizontalAlignment="Right" Margin="0,-5,0,0"/>
@@ -80,8 +101,8 @@
                             <StackPanel>
                                 <TextBlock Text="READ SPEED" Style="{StaticResource LabelStyle}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding ReadSpeedDisplay}" Style="{StaticResource ValueStyle}" Foreground="#22d3ee"/>
-                                    <TextBlock Text=" KB/s" Foreground="#71717a" VerticalAlignment="Bottom" Margin="5,0,0,3"/>
+                                    <TextBlock Text="{Binding ReadSpeedDisplay}" Style="{StaticResource ValueStyle}" Foreground="#34d399"/>
+                
                                 </StackPanel>
                             </StackPanel>
                         </Border>
@@ -90,9 +111,8 @@
                             <StackPanel>
                                 <TextBlock Text="WRITE SPEED" Style="{StaticResource LabelStyle}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding WriteSpeedDisplay}" Style="{StaticResource ValueStyle}" Foreground="#22d3ee"/>
-                                    <TextBlock Text=" KB/s" Foreground="#71717a" VerticalAlignment="Bottom" Margin="5,0,0,3"/>
-                                </StackPanel>
+                                    <TextBlock Text="{Binding WriteSpeedDisplay}" Style="{StaticResource ValueStyle}" Foreground="#34d399"/>
+                                     </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -100,9 +120,8 @@
                             <StackPanel>
                                 <TextBlock Text="AVG. RESPONSE" Style="{StaticResource LabelStyle}"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding AverageResponseTime, StringFormat={}{0:N1}}" Style="{StaticResource ValueStyle}" Foreground="#f87171"/>
-                                    <TextBlock Text=" ms" Foreground="#71717a" VerticalAlignment="Bottom" Margin="5,0,0,3"/>
-                                </StackPanel>
+                                    <TextBlock Text="{Binding AverageResponseTimeDisplay, StringFormat={}{0:N1}}" Style="{StaticResource ValueStyle}" Foreground="White"/>
+                                    </StackPanel>
                             </StackPanel>
                         </Border>
 
@@ -111,8 +130,7 @@
                                 <TextBlock Text="FORMATTED" Style="{StaticResource LabelStyle}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding FormattedCapacityDisplay}" Style="{StaticResource ValueStyle}"/>
-                                    <TextBlock Text=" GB" Foreground="#71717a" VerticalAlignment="Bottom" Margin="5,0,0,3"/>
-                                </StackPanel>
+                                    </StackPanel>
                             </StackPanel>
                         </Border>
                     </Grid>
@@ -134,11 +152,10 @@
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
 
-
                                             <Border Background="#27272a" CornerRadius="4" Padding="0" Margin="0,0,10,0" Height="24" VerticalAlignment="Center">
                                                 <TextBlock Text="{Binding DriveLetter}" 
                                                            FontWeight="Bold" 
-                                                           Foreground="#06b6d4" 
+                                                           Foreground="#10b981" 
                                                            HorizontalAlignment="Center" 
                                                            VerticalAlignment="Center"
                                                            FontSize="12"/>
@@ -151,17 +168,15 @@
                                                              Maximum="100" 
                                                              Height="6" 
                                                              Background="Transparent" 
-                                                             Foreground="#06b6d4" 
-                                                             BorderThickness="0"
-
-                                                             >
+                                                             Foreground="#10b981" 
+                                                             BorderThickness="0">
                                                     <ProgressBar.ToolTip>
-                                                        <ToolTip Background="#27272a" Foreground="White" BorderBrush="#06b6d4">
+                                                        <ToolTip Background="#27272a" Foreground="White" BorderBrush="#10b981">
                                                             <StackPanel Margin="5">
-                                                                <TextBlock Text="{Binding DriveLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                                                <TextBlock Text="{Binding DriveLatter}" FontWeight="Bold" Margin="0,0,0,5"/>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock Text="Used: " Foreground="#a1a1aa"/>
-                                                                    <TextBlock Text="{Binding UsedSpaceDisplay}"/>
+                                                                    <TextBlock Text="{Binding UsedSpace}"/>
                                                                 </StackPanel>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <TextBlock Text="Total: " Foreground="#a1a1aa"/>
@@ -183,7 +198,48 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                         </GroupBox>
+                        <ItemsControl ItemsSource="{Binding Volumes}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Margin="0,8">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="35"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="110"/>
+                                        </Grid.ColumnDefinitions>
 
+                                       
+
+                                        <Grid Grid.Column="1" VerticalAlignment="Center" Margin="0,0,15,0">
+                                            <ProgressBar Value="{Binding UsedPercentage, Mode=OneWay}" 
+                                 Maximum="100" 
+                                 Style="{StaticResource ModernProgressBarStyle}">
+
+                                                <ProgressBar.ToolTip>
+                                                    <ToolTip Background="#27272a" Foreground="White" BorderBrush="#10b981">
+                                                        <StackPanel Margin="5">
+                                                            <TextBlock Text="{Binding DriveLabel}" FontWeight="Bold" Margin="0,0,0,5"/>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="Used: " Foreground="#a1a1aa"/>
+                                                                <TextBlock Text="{Binding UsedSpaceDisplay}"/>
+                                                            </StackPanel>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="Total: " Foreground="#a1a1aa"/>
+                                                                <TextBlock Text="{Binding TotalSizeDisplay}"/>
+                                                            </StackPanel>
+                                                        </StackPanel>
+                                                    </ToolTip>
+                                                </ProgressBar.ToolTip>
+                                            </ProgressBar>
+                                        </Grid>
+
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right">
+                                         
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                         <GroupBox Grid.Column="1" Header="Properties" Foreground="#71717a" BorderBrush="#27272a">
                             <StackPanel Margin="10">
                                 <DockPanel Margin="0,5">

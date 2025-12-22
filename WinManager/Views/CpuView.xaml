@@ -46,7 +46,7 @@
 
                     <Grid Grid.Row="0" Margin="0,0,0,20">
                         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Left">
-                            <TextBlock Text="CPU Monitor" FontSize="28" FontWeight="ExtraBold" Foreground="White"/>
+                            <TextBlock Text="CPU" FontSize="28" FontWeight="ExtraBold" Foreground="White"/>
                             <TextBlock Text="{Binding Name}" FontSize="16" Foreground="#06b6d4" Margin="0,5,0,0"/>
                         </StackPanel>
 
