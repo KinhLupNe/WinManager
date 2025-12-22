@@ -298,7 +298,7 @@ namespace WinManager.Models
                             // % Disk Time (Active Time)
                             var activeCounter = new PerformanceCounter(
                                 "PhysicalDisk",
-                                "% Disk Time",
+                                "% Idle Time",
                                 instanceName);
                             activeCounter.NextValue();
                             _diskActiveTimeCounters[disk.DeviceID] = activeCounter;
@@ -403,7 +403,13 @@ namespace WinManager.Models
                 // Active time
                 if (_diskActiveTimeCounters.ContainsKey(disk.DeviceID))
                 {
-                    disk.ActiveTime = _diskActiveTimeCounters[disk.DeviceID].NextValue();
+                    float idleTime = _diskActiveTimeCounters[disk.DeviceID].NextValue();
+
+                    float activeTime = 100f - idleTime;
+                    if (activeTime < 0) activeTime = 0;
+                    if (activeTime > 100) activeTime = 100;
+
+                    disk.ActiveTime = activeTime;
                 }
 
                 // Average response time (convert seconds to milliseconds)
