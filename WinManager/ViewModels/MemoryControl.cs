@@ -52,8 +52,8 @@ namespace WinManager.ViewModels
                     Stroke = new SolidColorPaint(orangeColor) { StrokeThickness = 2 },
                     Fill = new SolidColorPaint(orangeColor.WithAlpha(50)),
                     GeometrySize = 0,
-                    LineSmoothness = 0.1,
-                    AnimationsSpeed = TimeSpan.FromMilliseconds(200)
+                    LineSmoothness = 0.0,
+                    AnimationsSpeed = TimeSpan.Zero
                 }
             };
 
@@ -89,12 +89,12 @@ namespace WinManager.ViewModels
             {
                 try
                 {
-                    // 1. Tính toán nặng ở Background Thread
+
                     var info = _memoryModel.GetMemoryInfo();
 
                     double usage = Math.Round(info.MemoryUsagePercent, 0);
 
-                    // 2. Cập nhật nhẹ ở UI Thread
+
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         MemoryUsagePercent = usage;
