@@ -157,66 +157,67 @@
                     </ItemsControl.ItemsPanel>
 
                     <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-        <RadioButton Style="{StaticResource NavButtonStyle}" 
-                     GroupName="NavGroup" 
-                     Tag="{Binding DiskType}"
-                     BorderBrush="#10b981"
-                     Margin="0,0,0,5"
-                     Command="{Binding DataContext.NavigateToDiskCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                     CommandParameter="{Binding}">
-
-            <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="{Binding Model}" 
-                           Foreground="White" 
-                           FontWeight="SemiBold"
-                           FontSize="11"
-                           TextTrimming="CharacterEllipsis" 
-                           MaxWidth="180"/>
-
-                <StackPanel Orientation="Horizontal" Margin="0,3,0,5">
-                     <TextBlock Text="{Binding ActiveTime, StringFormat={}{0:N0} %}" 
-                                FontWeight="Bold" FontSize="14"
-                                Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
-                     <TextBlock Text="{Binding FormattedTotalSize}" 
-                                Foreground="Gray" FontSize="11"
-                                VerticalAlignment="Bottom" Margin="10,0,0,1"/>
-                </StackPanel>
-
-                <ItemsControl ItemsSource="{Binding Volumes}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-
-                    <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="#3f3f46" 
-                                    CornerRadius="3" 
-                                    Padding="4,1" 
-                                    Margin="0,0,5,2">
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding DriveLetter}" 
-                                               Foreground="#e4e4e7" 
-                                               FontSize="10" 
-                                               FontWeight="Bold"/>
-                                    
-                                    <TextBlock Text="{Binding Label}" 
-                                               Foreground="Gray" 
-                                               FontSize="10" 
-                                               Margin="5,0,0,0"
-                                               MaxWidth="50"
-                                               TextTrimming="CharacterEllipsis"/>
+                            <RadioButton Style="{StaticResource NavButtonStyle}" 
+                         GroupName="NavGroup" 
+                         Tag="{Binding DiskType}"
+                         BorderBrush="#10b981"
+                         Margin="0,0,0,5"
+                         Command="{Binding DataContext.NavigateToDiskCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                         CommandParameter="{Binding}">
+
+                                <StackPanel VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding Model}" 
+                               Foreground="White" 
+                               FontWeight="SemiBold"
+                               FontSize="11"
+                               TextTrimming="CharacterEllipsis" 
+                               MaxWidth="180"/>
+
+                                    <StackPanel Orientation="Horizontal" Margin="0,3,0,5">
+                                        <TextBlock Text="{Binding ActiveTime, StringFormat={}{0:N0} %}" 
+                                   FontWeight="Bold" FontSize="14"
+                                   Foreground="{Binding Path=Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/>
+
+                                        <TextBlock Text="{Binding FormattedTotalSize}" 
+                                   Foreground="Gray" FontSize="11"
+                                   VerticalAlignment="Bottom" Margin="10,0,0,1"/>
+                                    </StackPanel>
+
+                                    <ItemsControl ItemsSource="{Binding Volumes}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel Orientation="Horizontal"/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Border Background="#3f3f46" 
+                                        CornerRadius="3" 
+                                        Padding="4,1" 
+                                        Margin="0,0,5,2">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding DriveLetter}" 
+                                                   Foreground="#e4e4e7" 
+                                                   FontSize="10" 
+                                                   FontWeight="Bold"/>
+
+                                                        <TextBlock Text="{Binding Label}" 
+                                                   Foreground="Gray" 
+                                                   FontSize="10" 
+                                                   Margin="5,0,0,0"
+                                                   MaxWidth="50"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                                    </StackPanel>
+                                                </Border>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
                                 </StackPanel>
-                            </Border>
+                            </RadioButton>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                </StackPanel>
-        </RadioButton>
-    </DataTemplate>
-</ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
         </Border>
