@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Management;
 
 namespace WinManager.Models
@@ -592,7 +589,7 @@ namespace WinManager.Models
             }
             return $"{mbps:F2} MB/s";
         }
-        
+
         // Get complete disk info with updated metrics
         public DiskInfo GetDiskInfo(int index)
         {
@@ -613,7 +610,7 @@ namespace WinManager.Models
             }
             return _disks;
         }
-        
+
         // Debug: Print all disk information
         public void PrintAllDisksInfo()
         {

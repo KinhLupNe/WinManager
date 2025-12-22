@@ -7,7 +7,7 @@ namespace WinManager.ViewModels
     public partial class PerformanceControl : ObservableObject
     {
         public CPUControl CpuControl { get; } = new CPUControl();
-        private readonly MemoryControl _memoryControl = new MemoryControl();
+        public MemoryControl MemControl { get; } = new MemoryControl();
 
         [ObservableProperty]
         private object? _currentView;
@@ -21,6 +21,6 @@ namespace WinManager.ViewModels
         public void NavigateToCPU() => CurrentView = CpuControl;
 
         [RelayCommand]
-        public void NavigateToMemory() => CurrentView = _memoryControl;
+        public void NavigateToMemory() => CurrentView = MemControl;
     }
 }

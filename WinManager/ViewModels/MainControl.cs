@@ -9,7 +9,7 @@ namespace WinManager.ViewModels
         private readonly PerformanceControl _performanceControl = new PerformanceControl();
         private readonly ServicesControl _servicesControl = new ServicesControl();
         private readonly SettingControl _settingControl = new SettingControl();
-        
+
         [ObservableProperty]
         private object? _currentView;
 
