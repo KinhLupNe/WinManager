@@ -8,5 +8,4 @@ namespace WinManager
     public partial class App : Application
     {
     }
-
 }

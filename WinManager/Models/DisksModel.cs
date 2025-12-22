@@ -735,6 +735,7 @@ namespace WinManager.Models
 
         // Performance metrics
         public float ReadSpeed { get; set; } // bytes/sec
+
         public float WriteSpeed { get; set; } // bytes/sec
         public float TransferRate { get; set; } // bytes/sec (read + write)
         public float ActiveTime { get; set; } // percentage
@@ -742,6 +743,7 @@ namespace WinManager.Models
 
         // Disk properties
         public ulong FormattedCapacity { get; set; }
+
         public bool IsSystemDisk { get; set; }
         public bool HasPageFile { get; set; }
     }

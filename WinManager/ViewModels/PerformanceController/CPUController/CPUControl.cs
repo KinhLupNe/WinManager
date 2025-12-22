@@ -4,7 +4,7 @@ using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.Collections.ObjectModel;
-using System.Windows; // Để dùng Application.Current.Dispatcher
+using System.Windows;    
 using WinManager.Models;
 
 namespace WinManager.ViewModels
@@ -12,12 +12,12 @@ namespace WinManager.ViewModels
     public partial class CPUControl : ObservableObject, IDisposable
     {
         private readonly CpuModel _cpuModel;
-        private readonly CancellationTokenSource _cts; // Token để hủy luồng an toàn
+        private readonly CancellationTokenSource _cts;       
 
         private ObservableCollection<double> _cpuValues;
 
-        // Binding Properties
         public ISeries[] Series { get; set; }
+
         public Axis[] XAxes { get; set; }
         public Axis[] YAxes { get; set; }
 
@@ -38,9 +38,8 @@ namespace WinManager.ViewModels
         {
             _cpuModel = new CpuModel();
             _cpuValues = new ObservableCollection<double>(new double[60]);
-            _cts = new CancellationTokenSource(); // Khởi tạo token hủy
+            _cts = new CancellationTokenSource();     
 
-            // Lấy thông tin tĩnh (Chạy 1 lần)
             try
             {
                 var initInfo = _cpuModel.GetCpuInfo();
@@ -50,7 +49,6 @@ namespace WinManager.ViewModels
             }
             catch { }
 
-            // Cấu hình biểu đồ (Giữ nguyên màu Cyan)
             Series = new ISeries[]
             {
                 new LineSeries<double>
@@ -62,13 +60,13 @@ namespace WinManager.ViewModels
                         new SKPoint(0.5f, 0),
                         new SKPoint(0.5f, 1)
                     ),
-                    GeometrySize = 0, // Tắt chấm tròn để vẽ nhanh hơn
-                    LineSmoothness = 0.0, // Tăng độ mượt đường cong
-                    AnimationsSpeed = TimeSpan.Zero // Hiệu ứng lướt nhẹ
+                    GeometrySize = 0,        
+                    LineSmoothness = 0.0,      
+                    AnimationsSpeed = TimeSpan.Zero     
                 }
             };
 
-            XAxes = new Axis[] { new Axis { IsVisible = true } }; // Tắt trục X cho đỡ rối
+            XAxes = new Axis[] { new Axis { IsVisible = true } };       
             YAxes = new Axis[]
             {
                 new Axis
@@ -81,7 +79,6 @@ namespace WinManager.ViewModels
                 }
             };
 
-            // Thread logic
             Task.Run(() => MonitorLoopC(_cts.Token));
         }
 
@@ -91,7 +88,6 @@ namespace WinManager.ViewModels
             {
                 try
                 {
-
                     var info = _cpuModel.GetCpuInfo();
 
                     double u = Math.Round(info.CpuUsage, 1);
@@ -117,17 +113,16 @@ namespace WinManager.ViewModels
                         if (_cpuValues.Count > 60) _cpuValues.RemoveAt(0);
                     });
 
-
                     await Task.Delay(1000, token);
                 }
-                catch (TaskCanceledException) { break; } // Thoát êm đẹp khi hủy
-                catch { await Task.Delay(1000, token); } // Lỗi thì đợi chút rồi thử lại
+                catch (TaskCanceledException) { break; }      
+                catch { await Task.Delay(1000, token); }        
             }
         }
 
         public void Dispose()
         {
-            _cts.Cancel(); // Ra lệnh dừng vòng lặp ngay lập tức
+            _cts.Cancel();         
             _cts.Dispose();
             _cpuModel?.Dispose();
         }
