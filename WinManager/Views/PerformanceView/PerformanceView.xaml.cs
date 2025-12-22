@@ -3,11 +3,11 @@
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for SettingView.xaml
+    /// Interaction logic for PerformanceView.xaml
     /// </summary>
-    public partial class SettingView : UserControl
+    public partial class PerformanceView : UserControl
     {
-        public SettingView()
+        public PerformanceView()
         {
             InitializeComponent();
         }

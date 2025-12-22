@@ -3,11 +3,11 @@
 namespace WinManager.Views
 {
     /// <summary>
-    /// Interaction logic for MemoryView.xaml
+    /// Interaction logic for DIsksView.xaml
     /// </summary>
-    public partial class MemoryView : UserControl
+    public partial class DisksView : UserControl
     {
-        public MemoryView()
+        public DisksView()
         {
             InitializeComponent();
         }

@@ -6,10 +6,11 @@
         xmlns:views="clr-namespace:WinManager.Views"
         xmlns:vm="clr-namespace:WinManager.ViewModels"
         mc:Ignorable="d"
-        Title="Window Monitor" 
+        Title="Window Monitor"
         ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen"
-        Background="#050505">
+        Background="#050505"
+        >
 
     <Window.DataContext>
         <vm:MainControl />
@@ -17,61 +18,61 @@
 
     <Window.Resources>
         <DataTemplate DataType="{x:Type vm:PerformanceControl}">
-            <views:PerformanceView/>
+            <views:PerformanceView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ServicesControl}">
-            <views:ServicesView/>
+            <views:ServicesView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:SettingControl}">
-            <views:SettingView/>
+            <views:SettingView />
         </DataTemplate>
 
         <Style x:Key="MainNavStyle" TargetType="RadioButton">
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Margin" Value="0,2"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Foreground" Value="#71717a"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="GroupName" Value="MainMenu"/>
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="#71717a" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="GroupName" Value="MainMenu" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border x:Name="Bd" 
-                                Background="{TemplateBinding Background}" 
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
                                 CornerRadius="8"
                                 Padding="15,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="4"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="4" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Border x:Name="Indicator" 
+                                <Border x:Name="Indicator"
                                         Grid.Column="0"
-                                        Background="#3B82F6" 
+                                        Background="#3B82F6"
                                         CornerRadius="2"
                                         Margin="0,12,0,12"
-                                        Visibility="Collapsed"/>
+                                        Visibility="Collapsed" />
 
-                                <ContentPresenter Grid.Column="1" 
-                                                  VerticalAlignment="Center" 
+                                <ContentPresenter Grid.Column="1"
+                                                  VerticalAlignment="Center"
                                                   HorizontalAlignment="Left"
-                                                  Margin="12,0,0,0"/>
+                                                  Margin="12,0,0,0" />
                             </Grid>
                         </Border>
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#18181b"/>
-                                <Setter Property="Foreground" Value="White"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#18181b" />
+                                <Setter Property="Foreground" Value="White" />
                             </Trigger>
 
                             <Trigger Property="IsChecked" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#1e293b"/>
-                                <Setter TargetName="Indicator" Property="Visibility" Value="Visible"/>
-                                <Setter Property="Foreground" Value="#3B82F6"/>
+                                <Setter TargetName="Bd" Property="Background" Value="#1e293b" />
+                                <Setter TargetName="Indicator" Property="Visibility" Value="Visible" />
+                                <Setter Property="Foreground" Value="#3B82F6" />
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -82,47 +83,47 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="#09090b" BorderBrush="#27272a" BorderThickness="0,0,0,1">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="20,0">
-                <Border Width="24" Height="24" Background="#3B82F6" CornerRadius="6" Margin="0,0,10,0">
-                    <TextBlock Text="W" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                <Border Width="35" Height="35" Background="#3B82F6" CornerRadius="6" Margin="0,0,10,0">
+                    <TextBlock Text="W" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <TextBlock Text="Window Monitor" Foreground="White" FontWeight="Bold" FontSize="14"/>
+                <TextBlock Text="Window Monitor" Foreground="White" FontWeight="Bold" FontSize="24" />
             </StackPanel>
         </Border>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="220" />
+                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Border Grid.Column="0" Background="#09090b" BorderBrush="#27272a" BorderThickness="0,0,1,0">
                 <StackPanel Margin="10,20">
-                    <TextBlock Text="MENU" Foreground="#52525b" FontSize="11" FontWeight="Bold" Margin="15,0,0,10"/>
+                    <TextBlock Text="MENU" Foreground="#52525b" FontSize="11" FontWeight="Bold" Margin="15,0,0,10" />
 
-                    <RadioButton Content="Performance" 
+                    <RadioButton Content="Performance"
                                  Style="{StaticResource MainNavStyle}"
-                                 IsChecked="True" 
-                                 Command="{Binding NavigateToPerformanceCommand}"/>
+                                 IsChecked="True"
+                                 Command="{Binding NavigateToPerformanceCommand}" />
 
-                    <RadioButton Content="Services" 
+                    <RadioButton Content="Services"
                                  Style="{StaticResource MainNavStyle}"
-                                 Command="{Binding NavigateToServicesCommand}"/>
+                                 Command="{Binding NavigateToServicesCommand}" />
 
-                    <RadioButton Content="Settings" 
+                    <RadioButton Content="Settings"
                                  Style="{StaticResource MainNavStyle}"
-                                 Command="{Binding NavigateToSettingCommand}"/>
+                                 Command="{Binding NavigateToSettingCommand}" />
                 </StackPanel>
             </Border>
 
             <Border Grid.Column="1" Background="#050505" Padding="20">
                 <Border Background="#09090b" CornerRadius="12" BorderBrush="#27272a" BorderThickness="1" ClipToBounds="True">
-                    <ContentControl Content="{Binding CurrentView}"/>
+                    <ContentControl Content="{Binding CurrentView}" />
                 </Border>
             </Border>
         </Grid>
