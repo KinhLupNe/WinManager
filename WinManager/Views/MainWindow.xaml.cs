@@ -13,7 +13,7 @@ namespace WinManager.Views
             InitializeComponent();
             try
             {
-                Uri icon = new Uri("../../../Views/Image/icon1.ico",UriKind.Relative);
+                Uri icon = new Uri("icon1.ico",UriKind.Relative);
                 this.Icon = new BitmapImage(icon);
             }
             catch (Exception ex)

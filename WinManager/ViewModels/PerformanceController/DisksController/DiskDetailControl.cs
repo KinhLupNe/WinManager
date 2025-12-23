@@ -11,19 +11,19 @@ namespace WinManager.ViewModels
 {
     public partial class VolumeDisplayItem : ObservableObject
     {
-        [ObservableProperty] private string _driveLetter;
-        [ObservableProperty] private string _label;
-        [ObservableProperty] private string _fileSystem;
+        [ObservableProperty] private string? _driveLetter;
+        [ObservableProperty] private string? _label;
+        [ObservableProperty] private string? _fileSystem;
 
         [ObservableProperty] private double _usedPercentage;
 
         [ObservableProperty] private ulong _totalSize;
         [ObservableProperty] private ulong _usedSpace;
 
-        [ObservableProperty] private string _totalSizeDisplay;      
+        [ObservableProperty] private string? _totalSizeDisplay;      
 
-        [ObservableProperty] private string _usedSpaceDisplay;      
-        [ObservableProperty] private string _freeSpaceDisplay;      
+        [ObservableProperty] private string? _usedSpaceDisplay;      
+        [ObservableProperty] private string? _freeSpaceDisplay;      
     }
 
     public partial class DiskDetailControl : ObservableObject, IDisposable
@@ -61,8 +61,14 @@ namespace WinManager.ViewModels
         {
             _currenDiskInfo = selectDisk;
             _diskValues = new ObservableCollection<double>(new double[60]);
-            _volumes = new ObservableCollection<VolumeDisplayItem>();      
+            _volumes = new ObservableCollection<VolumeDisplayItem>();
             _cts = new CancellationTokenSource();
+
+            _readSpeedDisplay = string.Empty;
+            _writeSpeedDisplay = string.Empty;
+            _averageResponseTimeDisplay = string.Empty;
+            _formattedCapacityDisplay = string.Empty;
+            _sizeDisplay = string.Empty;
 
             Series = new ISeries[]
             {
@@ -103,14 +109,14 @@ namespace WinManager.ViewModels
         {
             if (_currenDiskInfo != null)
             {
-                PhysicalDriveNumber = _currenDiskInfo.PhysicalDriveNumber;
-                Disktype = _currenDiskInfo.DiskType;
-                Model = _currenDiskInfo.Model;
-                IsSystemDisk = _currenDiskInfo.IsSystemDisk;
-                HasPageFile = _currenDiskInfo.HasPageFile;
+                PhysicalDriveNumber = CurrenDiskInfo.PhysicalDriveNumber;
+                Disktype = CurrenDiskInfo.DiskType;
+                Model = CurrenDiskInfo.Model;
+                IsSystemDisk = CurrenDiskInfo.IsSystemDisk;
+                HasPageFile = CurrenDiskInfo.HasPageFile;
 
-                SizeDisplay = FormatBytes(_currenDiskInfo.Size);
-                FormattedCapacityDisplay = FormatBytes(_currenDiskInfo.FormattedCapacity);
+                SizeDisplay = FormatBytes(CurrenDiskInfo.Size);
+                FormattedCapacityDisplay = FormatBytes(CurrenDiskInfo.FormattedCapacity);
 
                 UpdateVolumesList();
             }
@@ -124,16 +130,16 @@ namespace WinManager.ViewModels
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
-                        ActiveTime = _currenDiskInfo.ActiveTime;
+                        ActiveTime = CurrenDiskInfo.ActiveTime;
 
-                        ReadSpeedDisplay = FormatSpeed(_currenDiskInfo.ReadSpeed);
-                        WriteSpeedDisplay = FormatSpeed(_currenDiskInfo.WriteSpeed);
+                        ReadSpeedDisplay = FormatSpeed(CurrenDiskInfo.ReadSpeed);
+                        WriteSpeedDisplay = FormatSpeed(CurrenDiskInfo.WriteSpeed);
 
-                        AverageResponseTimeDisplay = $"{_currenDiskInfo.AverageResponseTime:F1} ms";
+                        AverageResponseTimeDisplay = $"{CurrenDiskInfo.AverageResponseTime:F1} ms";
 
                         UpdateVolumesList();
 
-                        double chartValue = _currenDiskInfo.ActiveTime;
+                        double chartValue = CurrenDiskInfo.ActiveTime;
                         _diskValues.Add(chartValue);
                         if (_diskValues.Count > 60) _diskValues.RemoveAt(0);
                     });
@@ -147,15 +153,15 @@ namespace WinManager.ViewModels
 
         private void UpdateVolumesList()
         {
-            var sourceVolumes = _currenDiskInfo.Volumes;
+            var sourceVolumes = CurrenDiskInfo.Volumes;
             if (sourceVolumes == null) return;
 
-            if (_volumes.Count != sourceVolumes.Count)
+            if (Volumes.Count != sourceVolumes.Count)
             {
-                _volumes.Clear();
+                Volumes.Clear();
                 foreach (var vol in sourceVolumes)
                 {
-                    _volumes.Add(new VolumeDisplayItem
+                    Volumes.Add(new VolumeDisplayItem
                     {
                         DriveLetter = vol.DriveLetter,
                         Label = vol.Label,
@@ -174,7 +180,7 @@ namespace WinManager.ViewModels
                 for (int i = 0; i < sourceVolumes.Count; i++)
                 {
                     var src = sourceVolumes[i];
-                    var dest = _volumes[i];
+                    var dest = Volumes[i];
 
                     dest.UsedSpace = src.UsedSpace;
                     dest.UsedPercentage = src.UsedPercentage;

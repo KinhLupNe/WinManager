@@ -3,6 +3,7 @@ using WinManager.Models;
 
 namespace WinManager.ViewModels.DisksController
 {
+    // Wrapper của DiskInfo
     public partial class DiskItemViewModel : ObservableObject
     {
         public DiskInfo OriginalDiskInfo { get; }

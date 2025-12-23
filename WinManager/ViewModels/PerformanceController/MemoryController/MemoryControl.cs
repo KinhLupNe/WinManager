@@ -42,7 +42,6 @@ namespace WinManager.ViewModels
             _memoryValues = new ObservableCollection<double>(new double[60]);
             _cts = new CancellationTokenSource();
 
-            // Cấu hình biểu đồ (Màu Cam)
             var orangeColor = SKColor.Parse("#f97316");
             Series = new ISeries[]
             {
@@ -79,7 +78,6 @@ namespace WinManager.ViewModels
             }
             catch { }
 
-            // Chạy luồng nền
             Task.Run(() => MonitorLoop(_cts.Token));
         }
 
