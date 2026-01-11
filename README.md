@@ -1,4 +1,5 @@
 # WinManager
+
 FrameWork: 
 - CommunityToolkit.Mvvm
 - LibreHardwareMonitorLib
