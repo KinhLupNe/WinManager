@@ -1,9 +1,9 @@
 ﻿using Microsoft.Win32;
 using System.Diagnostics;
 using System.Management;
-
-// dotnet add package System.ServiceProcess.ServiceController
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
+using System.Text;
 
 namespace WinManager.Models
 {
@@ -65,7 +65,12 @@ namespace WinManager.Models
                         }
                     }
 
-                    Debug.WriteLine($"Loaded {_services.Count} services");
+                    Debug.WriteLine($"Loaded {_services.Count} services from WMI");
+
+                    // THÊM DỊCH VỤ ẨN - không thay đổi các dịch vụ đã load
+                    LoadHiddenServices();
+
+                    Debug.WriteLine($"Total services after adding hidden: {_services.Count}");
                 }
                 catch (Exception ex)
                 {
@@ -74,6 +79,207 @@ namespace WinManager.Models
                     // Fallback to ServiceController if WMI fails
                     LoadServicesFromServiceController();
                 }
+            }
+        }
+        [DllImport("shlwapi.dll", CharSet = CharSet.Auto)]
+        private static extern int SHLoadIndirectString(
+    string pszSource,
+    StringBuilder pszOutBuf,
+    int cchOutBuf,
+    IntPtr ppvReserved
+);
+        private string ResolveIndirectString(string rawString)
+        {
+            if (string.IsNullOrEmpty(rawString)) return string.Empty;
+
+
+            if (!rawString.StartsWith("@")) return rawString;
+
+
+            int semicolonIndex = rawString.IndexOf(';');
+            if (semicolonIndex > 0 && semicolonIndex < rawString.Length - 1)
+            {
+                return rawString.Substring(semicolonIndex + 1);
+            }
+
+
+            StringBuilder sb = new StringBuilder(1024);
+            try
+            {
+                int result = SHLoadIndirectString(rawString, sb, sb.Capacity, IntPtr.Zero);
+                if (result == 0)
+                {
+                    return sb.ToString();
+                }
+            }
+            catch { }
+
+            return rawString;
+        }
+        // Thêm các dịch vụ ẩn vào danh sách
+        private void LoadHiddenServices()
+        {
+            try
+            {
+                Debug.WriteLine("Searching for hidden services in Registry...");
+
+                // Tạo HashSet của các service đã có để tránh trùng lặp
+                var existingServiceNames = new HashSet<string>(
+                    _services.Select(s => s.Name),
+                    StringComparer.OrdinalIgnoreCase
+                );
+
+                int hiddenCount = 0;
+
+                using (var servicesKey = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Services"))
+                {
+                    if (servicesKey == null)
+                    {
+                        Debug.WriteLine("Cannot access Services registry key");
+                        return;
+                    }
+
+                    var serviceNames = servicesKey.GetSubKeyNames();
+
+                    foreach (var serviceName in serviceNames)
+                    {
+                        // BỎ QUA nếu service này đã tồn tại trong danh sách
+                        if (existingServiceNames.Contains(serviceName))
+                            continue;
+
+                        try
+                        {
+                            using (var serviceKey = servicesKey.OpenSubKey(serviceName))
+                            {
+                                if (serviceKey == null) continue;
+
+                               // check is services , driver
+                                var typeValue = serviceKey.GetValue("Type");
+                                if (typeValue == null) continue;
+
+                                int type = Convert.ToInt32(typeValue);
+
+                                bool isService = (type & 0x10) != 0 || (type & 0x20) != 0;
+                                bool isDriver = (type & 0x1) != 0 || (type & 0x2) != 0;
+
+   
+                                if (!isService && !isDriver) continue;
+
+                                // dịch vụ ẩn - THÊM VÀO danh sách
+                                
+                                string rawDisplayName = serviceKey.GetValue("DisplayName")?.ToString() ?? serviceName;
+                                string rawDescription = serviceKey.GetValue("Description")?.ToString() ?? "";
+
+                                var hiddenServiceInfo = new ServiceInfo
+                                {
+                                    Name = serviceName,
+                                    // Dùng hàm Resolve để dịch chuỗi
+                                    DisplayName = ResolveIndirectString(rawDisplayName),
+                                    Description = ResolveIndirectString(rawDescription),
+
+                                    PathName = serviceKey.GetValue("ImagePath")?.ToString() ?? "",
+                                    StartName = serviceKey.GetValue("ObjectName")?.ToString() ?? "",
+                                    LoadOrderGroup = serviceKey.GetValue("Group")?.ToString() ?? "",
+                                    ErrorControl = serviceKey.GetValue("ErrorControl")?.ToString() ?? "",
+                                    ServiceType = GetServiceTypeFromRegistry(type),
+                                    StartMode = GetStartModeFromRegistry(serviceKey.GetValue("Start")),
+                                    Status = ServiceStatus.Unknown,
+                                    ProcessId = 0,
+                                    IsEnriched = false,
+                                    DesktopInteract = (type & 0x100) != 0
+                                };
+
+                                // Get dependencies
+                                var dependOnService = serviceKey.GetValue("DependOnService");
+                                if (dependOnService != null)
+                                {
+                                    if (dependOnService is string[] deps)
+                                    {
+                                        hiddenServiceInfo.Dependencies = deps.ToList();
+                                    }
+                                    else if (dependOnService is string dep)
+                                    {
+                                        hiddenServiceInfo.Dependencies = new List<string> { dep };
+                                    }
+                                }
+
+                                // Thử lấy status từ ServiceController
+                                TryGetStatusFromServiceController(hiddenServiceInfo);
+
+                                _services.Add(hiddenServiceInfo);
+                                hiddenCount++;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine($"Error reading hidden service {serviceName}: {ex.Message}");
+                        }
+                    }
+                }
+
+                Debug.WriteLine($"Added {hiddenCount} hidden services to the list");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error loading hidden services: {ex.Message}");
+            }
+        }
+
+        // Get service type from registry type value
+        private string GetServiceTypeFromRegistry(int type)
+        {
+            var types = new List<string>();
+
+            if ((type & 0x1) != 0) types.Add("Kernel Driver");
+            if ((type & 0x2) != 0) types.Add("File System Driver");
+            if ((type & 0x4) != 0) types.Add("Adapter");
+            if ((type & 0x10) != 0) types.Add("Own Process");
+            if ((type & 0x20) != 0) types.Add("Share Process");
+            if ((type & 0x100) != 0) types.Add("Interactive");
+
+            return types.Count > 0 ? string.Join(", ", types) : "Unknown";
+        }
+
+        // Get start mode from registry start value
+        private ServiceStartMode GetStartModeFromRegistry(object startValue)
+        {
+            if (startValue == null) return ServiceStartMode.Unknown;
+
+            try
+            {
+                int start = Convert.ToInt32(startValue);
+                return start switch
+                {
+                    0 => ServiceStartMode.Boot,
+                    1 => ServiceStartMode.System,
+                    2 => ServiceStartMode.Automatic,
+                    3 => ServiceStartMode.Manual,
+                    4 => ServiceStartMode.Disabled,
+                    _ => ServiceStartMode.Unknown
+                };
+            }
+            catch
+            {
+                return ServiceStartMode.Unknown;
+            }
+        }
+
+        // Try to get status from ServiceController for hidden services
+        private void TryGetStatusFromServiceController(ServiceInfo serviceInfo)
+        {
+            try
+            {
+                using (var sc = new ServiceController(serviceInfo.Name))
+                {
+                    serviceInfo.Status = ConvertStatus(sc.Status);
+                    serviceInfo.IsEnriched = true;
+                }
+            }
+            catch
+            {
+                // Service not accessible via ServiceController (probably a driver)
+                // Keep status as Unknown or assume Stopped
+                serviceInfo.Status = ServiceStatus.Stopped;
             }
         }
 
@@ -112,6 +318,9 @@ namespace WinManager.Models
                 }
 
                 Debug.WriteLine($"Fallback loaded {_services.Count} services");
+
+                // THÊM DỊCH VỤ ẨN cho trường hợp fallback
+                LoadHiddenServices();
             }
             catch (Exception ex)
             {

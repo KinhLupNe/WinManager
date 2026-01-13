@@ -101,7 +101,7 @@ namespace WinManager.ViewModels
             };
 
             Init();
-
+            // chạy luồng phụ tránh chậm
             Task.Run(() => MonitorLoopD(_cts.Token));
         }
 
