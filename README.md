@@ -1,4 +1,4 @@
-<img width="886" height="544" alt="image" src="https://github.com/user-attachments/assets/51639b7f-7497-4fb1-a852-988f589a591d" /># WinManager
+# WinManager
 
 Dự án theo dõi thông tin phần cứng, tiến trình, dịch vụ của Windows.
 C#, WPF
@@ -13,12 +13,12 @@ Một số hình ảnh:
 
 
 
-Cài đặt :
+# Cài đặt :
 - Clone dự án :
 - Vào click vào .sln
 - Tải các framework yêu cầu ở dưới với package manager: NuGet
 - Build - dùng vsc cho nhanh
-FrameWork: 
+# FrameWork: 
 - CommunityToolkit.Mvvm
 - LibreHardwareMonitorLib
 - LiveChartsCore.SkiaSharpView.WPF rc5.4
